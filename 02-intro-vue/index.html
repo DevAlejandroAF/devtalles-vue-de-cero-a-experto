@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intro Vue</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Batman quotes {{ totalQuotes }}</h1>
+      <input
+        type="text"
+        placeholder="Add quote"
+        @keypress.enter="addQuote"
+        v-model="newMessage"
+      />
+
+      <br />
+      <br />
+      <!-- <button @click="toggleAuthor">Toggle Author</button> -->
+      <button @click="showAuthor = !showAuthor">Toggle Author</button>
+      <!-- <button @click="addQuote">Add quote</button> -->
+      <hr />
+
+      <ul>
+        <li v-for="({ quote, author }, index ) in quotes">
+          <span>{{ index + 1 }} - {{ quote }}</span>
+
+          <blockquote v-show="showAuthor">{{ author }}</blockquote>
+        </li>
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const originalQuotes = [
+        {
+          quote:
+            "The night is darkest just before the dawn. And I promise you, the dawn is coming.",
+          author: "Harvey Dent, The Dark Knight",
+        },
+        {
+          quote: "I believe what doesn’t kill you simply makes you, stranger.",
+          author: "The Joker, The Dark Knight",
+        },
+        {
+          quote:
+            "Your anger gives you great power. But if you let it, it will destroy you… As it almost did me",
+          author: "Henri Ducard, Batman Begins",
+        },
+        {
+          quote:
+            "You either die a hero or live long enough to see yourself become the villain.",
+          author: "Harvey Dent, The Dark Knight",
+        },
+        {
+          quote: "If you’re good at something, never do it for free.",
+          author: "The Joker, The Dark Knight",
+        },
+        {
+          quote: "Yes, father. I shall become a bat.",
+          author: "Bruce Wayne/Batman, Batman: Year One",
+        },
+      ];
+
+      const { createApp, ref, computed } = Vue;
+
+      const app = createApp({
+        setup() {
+          const showAuthor = ref(false);
+          const quotes = ref(originalQuotes);
+          const newMessage = ref("");
+
+          const totalQuotes = computed(() => {
+            return quotes.value.length;
+          });
+
+          const toggleAuthor = () => {
+            showAuthor.value = !showAuthor.value;
+          };
+
+          const addQuote = () => {
+            quotes.value.unshift({
+              quote: newMessage.value,
+              author: "Fernando Herrera",
+            });
+
+            newMessage.value = "";
+          };
+
+          return {
+            quotes,
+            showAuthor,
+            newMessage,
+
+            toggleAuthor,
+            addQuote,
+            totalQuotes,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
