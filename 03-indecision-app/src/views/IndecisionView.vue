@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import ChatMessages from '@/components/chat/ChatMessages.vue';
 import MessageBox from '@/components/chat/MessageBox.vue';
+import { useChat } from '@/composables/useChat';
+
+const { messages, onMessage } = useChat();
 </script>
 
 <template>
@@ -9,7 +12,7 @@ import MessageBox from '@/components/chat/MessageBox.vue';
       <span>Mi esposa</span>
     </div>
 
-    <ChatMessages />
-    <MessageBox />
+    <ChatMessages :messages="messages" />
+    <MessageBox @send-message="onMessage($event)" />
   </div>
 </template>
